@@ -220,7 +220,7 @@ fn cmd_list_tables(conn: &Connection, w: &mut dyn Write) {
             let _ = writeln!(w, "No tables found.");
         }
         Err(e) => {
-            let _ = writeln!(w, "Error: {e}");
+            let _ = writeln!(w, "Error: {}", turso_pg::error_message(&e));
         }
     }
 }
@@ -273,7 +273,7 @@ fn cmd_describe_table(conn: &Connection, table_name: &str, w: &mut dyn Write) {
             let _ = writeln!(w, "Table '{table_name}' not found.");
         }
         Err(e) => {
-            let _ = writeln!(w, "Error: {e}");
+            let _ = writeln!(w, "Error: {}", turso_pg::error_message(&e));
         }
     }
 }
@@ -294,7 +294,7 @@ fn cmd_list_databases(conn: &Connection, w: &mut dyn Write) {
         }
         Ok(None) => {}
         Err(e) => {
-            let _ = writeln!(w, "Error: {e}");
+            let _ = writeln!(w, "Error: {}", turso_pg::error_message(&e));
         }
     }
 }
@@ -334,7 +334,7 @@ fn cmd_list_indexes(conn: &Connection, w: &mut dyn Write) {
             let _ = writeln!(w, "No indexes found.");
         }
         Err(e) => {
-            let _ = writeln!(w, "Error: {e}");
+            let _ = writeln!(w, "Error: {}", turso_pg::error_message(&e));
         }
     }
 }
@@ -361,7 +361,7 @@ fn cmd_list_views(conn: &Connection, w: &mut dyn Write) {
             let _ = writeln!(w, "No views found.");
         }
         Err(e) => {
-            let _ = writeln!(w, "Error: {e}");
+            let _ = writeln!(w, "Error: {}", turso_pg::error_message(&e));
         }
     }
 }
@@ -395,7 +395,7 @@ fn cmd_list_schemas(conn: &Connection, w: &mut dyn Write) {
             let _ = writeln!(w, "No schemas found.");
         }
         Err(e) => {
-            let _ = writeln!(w, "Error: {e}");
+            let _ = writeln!(w, "Error: {}", turso_pg::error_message(&e));
         }
     }
 }
@@ -426,7 +426,7 @@ fn cmd_list_types(conn: &Connection, w: &mut dyn Write) {
             let _ = writeln!(w, "No types found.");
         }
         Err(e) => {
-            let _ = writeln!(w, "Error: {e}");
+            let _ = writeln!(w, "Error: {}", turso_pg::error_message(&e));
         }
     }
 }
@@ -458,7 +458,7 @@ fn cmd_list_roles(conn: &Connection, w: &mut dyn Write) {
             let _ = writeln!(w, "No roles found.");
         }
         Err(e) => {
-            let _ = writeln!(w, "Error: {e}");
+            let _ = writeln!(w, "Error: {}", turso_pg::error_message(&e));
         }
     }
 }
@@ -494,7 +494,7 @@ fn cmd_list_functions(conn: &Connection, w: &mut dyn Write) {
             let _ = writeln!(w, "No functions found.");
         }
         Err(e) => {
-            let _ = writeln!(w, "Error: {e}");
+            let _ = writeln!(w, "Error: {}", turso_pg::error_message(&e));
         }
     }
 }
@@ -590,7 +590,7 @@ fn cmd_list_tables_extended(conn: &Connection, w: &mut dyn Write) {
             let _ = writeln!(w, "No tables found.");
         }
         Err(e) => {
-            let _ = writeln!(w, "Error: {e}");
+            let _ = writeln!(w, "Error: {}", turso_pg::error_message(&e));
         }
     }
 }
@@ -687,14 +687,14 @@ fn execute_sql(
                     print_result_set(stmt, table_config, w)
                 };
                 if let Err(e) = result {
-                    let _ = writeln!(w, "Error: {e}");
+                    let _ = writeln!(w, "Error: {}", turso_pg::error_message(&e));
                     had_error = true;
                     break;
                 }
             }
             Ok(None) => {}
             Err(ref e) => {
-                let _ = writeln!(w, "Error: {e}");
+                let _ = writeln!(w, "Error: {}", turso_pg::error_message(e));
                 had_error = true;
                 break;
             }
