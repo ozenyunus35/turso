@@ -118,7 +118,7 @@ fn open_database(
 
     let (io, db) =
         turso_pg::open_database(db_path, vfs.map(|v| v.as_str()), flags, db_opts.turso_cli())?;
-    let conn = Connection::new(db.connect(ConnectOpts::new())?);
+    let conn = Connection::new(db.connect(ConnectOpts::new(turso_core::SessionRole::Superuser))?);
     Ok((io, conn))
 }
 
