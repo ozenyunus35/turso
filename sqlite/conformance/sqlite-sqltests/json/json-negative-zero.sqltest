@@ -1,0 +1,32 @@
+@database :memory:
+
+# A REAL negative zero becomes `0.0` in JSON, the same way SQLite prints it
+# anywhere else, so JSON built from 0.0 and -0.0 compares equal.
+
+test json-negative-zero-is-written-as-zero {
+    SELECT json_array(-0.0), json_object('a', -0.0), json_quote(-0.0), json(jsonb_array(-0.0));
+}
+expect {
+    [0.0]|{"a":0.0}|0.0|[0.0]
+}
+
+test jsonb-negative-zero-equals-zero {
+    SELECT jsonb_array(-0.0) = jsonb_array(0.0);
+}
+expect {
+    1
+}
+
+test json-negative-zero-distinct {
+    SELECT count(*) FROM (SELECT DISTINCT json_array(x) FROM (SELECT -0.0 AS x UNION ALL SELECT 0.0));
+}
+expect {
+    1
+}
+
+test json-negative-zero-text-passes-through {
+    SELECT json('[-0.0]');
+}
+expect {
+    [-0.0]
+}

@@ -285,6 +285,8 @@ pub fn convert_ref_dbtype_to_jsonb(val: ValueRef<'_>, strict: Conv) -> crate::Re
                 };
                 Jsonb::from_str(json_str).map_err(malformed_json_error)
             } else {
+                // SQLite writes negative zero as `0.0`, as it does everywhere else.
+                let float = if float == 0.0 { 0.0 } else { float };
                 let mut buff = ryu::Buffer::new();
                 let s_ryu = buff.format(float);
                 let mut s = Cow::Borrowed(s_ryu);
